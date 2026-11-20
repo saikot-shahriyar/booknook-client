@@ -39,8 +39,9 @@ export function Navbar({ isAuthenticated = false }: NavbarProps) {
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  // Determine active state for links
+  // Determine active state for links safely
   const isLinkActive = (href: string) => {
+    if (!pathname) return false;
     if (href === "/") {
       return pathname === "/";
     }
