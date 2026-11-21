@@ -1,10 +1,13 @@
 import { betterAuth } from "better-auth";
 import { mongodbAdapter } from "better-auth/adapters/mongodb";
+import { jwt } from "better-auth/plugins";
 import { db, client } from "@/lib/mongodb";
 
 const hasGoogleAuth = Boolean(
   process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET
 );
+
+const authBaseUrl = process.env.BETTER_AUTH_URL || "http://localhost:3000";
 
 export const auth = betterAuth({
   appName: "BookNook",
@@ -24,8 +27,16 @@ export const auth = betterAuth({
         },
       }
     : {}),
+  plugins: [
+    jwt({
+      jwt: {
+        issuer: authBaseUrl,
+        audience: authBaseUrl,
+      },
+    }),
+  ],
   secret: process.env.BETTER_AUTH_SECRET,
-  baseURL: process.env.BETTER_AUTH_URL || "http://localhost:3000",
+  baseURL: authBaseUrl,
 });
 
 export type Auth = typeof auth;

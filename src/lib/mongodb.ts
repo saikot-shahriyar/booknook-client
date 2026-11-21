@@ -4,8 +4,9 @@ import { MongoClient, ServerApiVersion, Db } from "mongodb";
 // Configure public DNS resolution for SRV records on Windows networks where local DNS can fail
 try {
   dns.setServers(["8.8.8.8", "1.1.1.1"]);
-} catch {
-  // Ignore in restricted environments
+  dns.setDefaultResultOrder("ipv4first");
+} catch (err) {
+  console.warn("Could not set custom DNS servers:", err);
 }
 
 const uri = process.env.MONGODB_URI;
