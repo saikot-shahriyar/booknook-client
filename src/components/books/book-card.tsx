@@ -6,8 +6,8 @@ import { Book } from "@/types";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
-// Category badge colors
-const categoryBadgeStyles: Record<string, string> = {
+// Category badge colors, exported for reuse by other book views (e.g. details page).
+export const categoryBadgeStyles: Record<string, string> = {
   Fiction: "bg-purple-100 text-purple-800 border-purple-200 dark:bg-purple-950/60 dark:text-purple-300 dark:border-purple-800",
   Science: "bg-blue-100 text-blue-800 border-blue-200 dark:bg-blue-950/60 dark:text-blue-300 dark:border-blue-800",
   History: "bg-amber-100 text-amber-800 border-amber-200 dark:bg-amber-950/60 dark:text-amber-300 dark:border-amber-800",

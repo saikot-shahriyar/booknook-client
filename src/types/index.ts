@@ -31,3 +31,29 @@ export interface Borrow {
   returnDate: string;
   createdAt?: string;
 }
+
+/** Backend envelope for list endpoints: `{ success: true, count, data }`. */
+export interface ApiListResponse<T> {
+  success: true;
+  count: number;
+  data: T[];
+}
+
+/** Backend envelope for single-entity endpoints: `{ success: true, data }`. */
+export interface ApiItemResponse<T> {
+  success: true;
+  data: T;
+}
+
+/** Backend envelope for mutation endpoints: `{ success: true, message, data? }`. */
+export interface ApiMutationResponse<T = void> {
+  success: true;
+  message: string;
+  data?: T;
+}
+
+/** Backend error envelope: `{ success: false, message }`. */
+export interface ApiErrorResponse {
+  success: false;
+  message: string;
+}
