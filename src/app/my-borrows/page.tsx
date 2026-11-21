@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { ProtectedRoute } from "@/components/auth/protected-route";
+import { requireAuth } from "@/lib/auth-server";
 import { BookmarkCheck } from "lucide-react";
 
 export const instant = false;
@@ -9,7 +10,9 @@ export const metadata: Metadata = {
   description: "View your borrowed books and return them from BookNook.",
 };
 
-export default function MyBorrowsPage() {
+export default async function MyBorrowsPage() {
+  await requireAuth("/my-borrows");
+
   return (
     <ProtectedRoute>
       <div className="flex flex-1 items-center justify-center min-h-[60vh] py-16 px-4">

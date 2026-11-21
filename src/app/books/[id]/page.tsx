@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { ProtectedRoute } from "@/components/auth/protected-route";
+import { requireAuth } from "@/lib/auth-server";
 import { BookOpen } from "lucide-react";
 
 // Opt out of instant/static prerender — this route needs runtime data (params + session)
@@ -16,6 +17,7 @@ interface BookDetailsPageProps {
 
 export default async function BookDetailsPage({ params }: BookDetailsPageProps) {
   const { id } = await params;
+  await requireAuth(`/books/${id}`);
 
   return (
     <ProtectedRoute>

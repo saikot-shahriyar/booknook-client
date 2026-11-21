@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { ProtectedRoute } from "@/components/auth/protected-route";
+import { requireAuth } from "@/lib/auth-server";
 import { PlusCircle } from "lucide-react";
 
 export const instant = false;
@@ -9,7 +10,9 @@ export const metadata: Metadata = {
   description: "Add a new book to the BookNook library collection.",
 };
 
-export default function AddBookPage() {
+export default async function AddBookPage() {
+  await requireAuth("/add-book");
+
   return (
     <ProtectedRoute>
       <div className="flex flex-1 items-center justify-center min-h-[60vh] py-16 px-4">
