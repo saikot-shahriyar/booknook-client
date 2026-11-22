@@ -160,19 +160,13 @@ export async function apiFetch<T = unknown>(path: string, init: ApiFetchOptions 
  */
 export async function getLatestBooks(limit = 6): Promise<GetBooksResponse> {
   try {
-    const json = await apiFetch<{ data?: Book[] }>(`/books`, { cache: "no-store" });
+    // The backend applies MongoDB sort (createdAt: -1) and limit via /books?limit=N
+    const json = await apiFetch<{ data?: Book[] }>(`/books?limit=${limit}`, { cache: "no-store" });
 
     const books = json?.data;
     const rawBooks: Book[] = Array.isArray(books) ? books : [];
 
-    // Sort newest first by createdAt if present
-    const sorted = [...rawBooks].sort((a, b) => {
-      const timeA = a.createdAt ? Date.parse(a.createdAt) : 0;
-      const timeB = b.createdAt ? Date.parse(b.createdAt) : 0;
-      return timeB - timeA;
-    });
-
-    return { books: sorted.slice(0, limit), error: null };
+    return { books: rawBooks, error: null };
   } catch (err) {
     const message = errorMessage(err, "Unable to connect to the library catalog service.");
     return { books: [], error: message };
