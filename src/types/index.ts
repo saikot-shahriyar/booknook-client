@@ -52,6 +52,26 @@ export interface ApiMutationResponse<T = void> {
   data?: T;
 }
 
+/** Request body for `POST /books` (returns the created book via `ApiMutationResponse<Book>`). */
+export interface CreateBookRequest {
+  title: string;
+  author: string;
+  category: BookCategory;
+  image: string;
+  description: string;
+  totalCopies: number;
+}
+
+/** Request body for `PATCH /books/:id` (owner only; `availableCopies` is server-managed). */
+export type UpdateBookRequest = {
+  title?: string;
+  author?: string;
+  category?: BookCategory;
+  image?: string;
+  description?: string;
+  totalCopies?: number;
+};
+
 /** Backend error envelope: `{ success: false, message }`. */
 export interface ApiErrorResponse {
   success: false;

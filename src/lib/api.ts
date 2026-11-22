@@ -1,9 +1,21 @@
 import { API_BASE_URL } from "@/lib/config";
 import { getAuthToken } from "@/lib/auth-token";
-import { Book, ApiItemResponse, ApiMutationResponse, Borrow } from "@/types";
+import {
+  Book,
+  ApiItemResponse,
+  ApiMutationResponse,
+  Borrow,
+  CreateBookRequest,
+  UpdateBookRequest,
+} from "@/types";
 
 export interface GetBooksResponse {
   books: Book[];
+  error: string | null;
+}
+
+export interface GetBorrowsResponse {
+  borrows: Borrow[];
   error: string | null;
 }
 
@@ -223,6 +235,170 @@ export async function borrowBook(bookId: string): Promise<ApiMutationResponse<Bo
   return apiFetch<ApiMutationResponse<Borrow>>("/borrows", {
     method: "POST",
     body: { bookId: trimmedId },
+    cache: "no-store",
+  });
+}
+
+/**
+ * Fetch the signed-in user's active borrow records via `GET /borrows`.
+ * The backend derives the user from the verified JWT — no client-supplied
+ * identity is sent. Returns the borrows or a user-friendly error message.
+ */
+export async function getMyBorrows(): Promise<GetBorrowsResponse> {
+  try {
+    const json = await apiFetch<{ data?: Borrow[] }>(`/borrows`, { cache: "no-store" });
+
+    // Defensive filter: only items that carry the borrow record `_id` can be
+    // used for returns, so the list always contains usable record IDs.
+    const borrows = Array.isArray(json?.data)
+      ? json.data.filter((borrow): borrow is Borrow => Boolean(borrow._id))
+      : [];
+    return { borrows, error: null };
+  } catch (err) {
+    const message = errorMessage(err, "Unable to load your borrowed books. Please try again.");
+    return { borrows: [], error: message };
+  }
+}
+
+/**
+ * Return a borrowed book via `DELETE /borrows/:id` (the borrow record ID, not
+ * the book ID). The backend verifies the record belongs to the authenticated
+ * user and restores the book's `availableCopies` by 1.
+ */
+export async function deleteBorrow(
+  id: string
+): Promise<ApiMutationResponse<{ bookId: string; bookTitle: string }>> {
+  const trimmedId = id.trim();
+
+  if (!trimmedId) {
+    throw new ApiError("Borrow ID is required.", 400);
+  }
+
+  return apiFetch<ApiMutationResponse<{ bookId: string; bookTitle: string }>>(
+    `/borrows/${encodeURIComponent(trimmedId)}`,
+    { method: "DELETE", cache: "no-store" }
+  );
+}
+
+/**
+ * Upload a book cover image through the server-side proxy route.
+ *
+ * The image is posted as FormData to the same-origin Next.js route
+ * `POST /api/upload`; that route uploads the file to ImgBB using the
+ * server-side `IMGBB_API_KEY` (the key never reaches the browser) and
+ * returns the hosted image URL.
+ *
+ * This intentionally bypasses `apiFetch()`: it prefixes the Express backend
+ * base URL (`API_BASE_URL`), and the Express backend has no `/api/upload`
+ * route — this request used to 404 there.
+ */
+export async function uploadBookImage(file: File): Promise<string> {
+  const formData = new FormData();
+  formData.append("file", file);
+
+  const response = await fetch("/api/upload", {
+    method: "POST",
+    body: formData,
+    cache: "no-store",
+  });
+
+  const body: unknown = await response.json().catch(() => null);
+
+  if (!response.ok) {
+    throw new ApiError(
+      backendErrorMessage(body) ?? `Image upload failed with status ${response.status}.`,
+      response.status,
+      body
+    );
+  }
+
+  const url = (body as ApiMutationResponse<{ url: string }> | null)?.data?.url;
+  if (typeof url !== "string" || !url) {
+    throw new ApiError("Image upload failed. Please try again.", 502);
+  }
+
+  return url;
+}
+
+/**
+ * Add a new book to the library via the backend.
+ * Returns the backend response: `{ success: true, message, data: Book }`.
+ */
+export async function createBook(data: CreateBookRequest): Promise<ApiMutationResponse<Book>> {
+  return apiFetch<ApiMutationResponse<Book>>("/books", {
+    method: "POST",
+    body: {
+      title: data.title,
+      author: data.author,
+      category: data.category,
+      image: data.image,
+      description: data.description,
+      totalCopies: data.totalCopies,
+    },
+    cache: "no-store",
+  });
+}
+
+/**
+ * Fetch the books added by a specific user via `GET /books?userEmail=...`.
+ * Returns the user's books or a user-friendly error message.
+ */
+export async function getMyBooks(userEmail: string): Promise<GetBooksResponse> {
+  const email = userEmail.trim();
+
+  if (!email) {
+    return { books: [], error: "Unable to load your books. Please sign in again." };
+  }
+
+  try {
+    const json = await apiFetch<{ data?: Book[] }>(
+      `/books?userEmail=${encodeURIComponent(email)}`,
+      { cache: "no-store" }
+    );
+    const books = Array.isArray(json?.data) ? json.data : [];
+    return { books, error: null };
+  } catch (err) {
+    const message = errorMessage(err, "Unable to load your books. Please try again.");
+    return { books: [], error: message };
+  }
+}
+
+/**
+ * Update an existing book. The backend only allows the creator who added the
+ * book (403 otherwise — ownership is derived from the verified JWT, not the
+ * client).
+ */
+export async function updateBook(
+  id: string,
+  data: UpdateBookRequest
+): Promise<ApiMutationResponse<Book>> {
+  const trimmedId = id.trim();
+
+  if (!trimmedId) {
+    throw new ApiError("Book ID is required.", 400);
+  }
+
+  return apiFetch<ApiMutationResponse<Book>>(`/books/${encodeURIComponent(trimmedId)}`, {
+    method: "PATCH",
+    body: data,
+    cache: "no-store",
+  });
+}
+
+/**
+ * Delete a book. The backend only allows the creator who added the book
+ * (403 otherwise — ownership is derived from the verified JWT, not the
+ * client).
+ */
+export async function deleteBook(id: string): Promise<ApiMutationResponse<void>> {
+  const trimmedId = id.trim();
+
+  if (!trimmedId) {
+    throw new ApiError("Book ID is required.", 400);
+  }
+
+  return apiFetch<ApiMutationResponse<void>>(`/books/${encodeURIComponent(trimmedId)}`, {
+    method: "DELETE",
     cache: "no-store",
   });
 }

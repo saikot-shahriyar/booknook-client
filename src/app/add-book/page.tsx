@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { ProtectedRoute } from "@/components/auth/protected-route";
 import { requireAuth } from "@/lib/auth-server";
-import { PlusCircle } from "lucide-react";
+import { AddBookForm } from "@/components/books/add-book-form";
 
 export const instant = false;
 
@@ -15,16 +15,8 @@ export default async function AddBookPage() {
 
   return (
     <ProtectedRoute>
-      <div className="flex flex-1 items-center justify-center min-h-[60vh] py-16 px-4">
-        <div className="text-center space-y-4 text-muted-foreground">
-          <div className="flex size-16 items-center justify-center rounded-2xl bg-primary/10 mx-auto">
-            <PlusCircle className="size-8 text-primary" />
-          </div>
-          <h1 className="text-2xl font-bold text-foreground">Add a New Book</h1>
-          <p className="text-sm max-w-sm mx-auto">
-            The book submission form will be built here in the next task.
-          </p>
-        </div>
+      <div className="flex flex-1 items-center justify-center min-h-[60vh] py-16 px-4 sm:px-6 lg:px-8">
+        <AddBookForm />
       </div>
     </ProtectedRoute>
   );
