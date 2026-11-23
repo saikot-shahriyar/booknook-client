@@ -39,41 +39,6 @@ The client communicates with the separate BookNook Express API:
 - MongoDB
 - JWT verification with [jose](https://github.com/panva/jose)
 
-## Project Structure
-
-```text
-booknook-client/
-├── public/                  # Static assets
-├── src/
-│   ├── app/
-│   │   ├── add-book/        # Add a book (protected)
-│   │   ├── api/
-│   │   │   ├── auth/        # Better Auth API handler
-│   │   │   └── upload/      # Server-side ImgBB upload endpoint
-│   │   ├── books/
-│   │   │   └── [id]/        # Book details page
-│   │   ├── login/           # Login page
-│   │   ├── my-books/        # Manage books added by the user
-│   │   ├── my-borrows/      # View and return borrowed books
-│   │   ├── register/        # Registration page
-│   │   ├── layout.tsx       # Root layout
-│   │   ├── not-found.tsx    # Custom 404 page
-│   │   └── page.tsx         # Home page
-│   ├── components/
-│   │   ├── auth/            # Authentication and route protection
-│   │   ├── books/           # Book, borrow, and management components
-│   │   ├── home/            # Home page sections
-│   │   ├── icons/           # Custom icons
-│   │   ├── layout/          # Navbar and footer
-│   │   └── ui/              # Reusable UI components
-│   ├── lib/                 # API, authentication, database, and utilities
-│   └── types/               # Shared TypeScript types
-├── .env.example             # Environment variable template
-├── components.json          # UI component configuration
-├── next.config.ts
-├── package.json
-└── tsconfig.json
-```
 
 ## Getting Started
 
@@ -131,43 +96,4 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-## Environment Variables
-
-The client repository includes these variables in `.env.example` or reads them in its configuration.
-
-| Variable | Visibility | Required | Description |
-|---|---|---:|---|
-| `NEXT_PUBLIC_API_URL` | Public | Yes for a non-default API URL | Base URL of the Express backend. Defaults to `http://localhost:5000`. |
-| `NEXT_PUBLIC_APP_URL` | Public | Optional for local development | Base URL used by the Better Auth client. Defaults to `http://localhost:3000`. Set it when the client runs on a different URL. |
-| `MONGODB_URI` | Server-only | Yes | MongoDB connection URI used by the Better Auth database adapter. |
-| `BETTER_AUTH_SECRET` | Server-only | Yes | Secret used by Better Auth. Use a strong secret of at least 32 characters. |
-| `BETTER_AUTH_URL` | Server-only | Recommended | Base URL for the Better Auth server and JWT issuer/audience. Defaults to `http://localhost:3000`. |
-| `GOOGLE_CLIENT_ID` | Server-only | Optional | Google OAuth client ID. Configure it together with the client secret to enable Google sign-in. |
-| `GOOGLE_CLIENT_SECRET` | Server-only | Optional | Google OAuth client secret. Never expose it in browser code. |
-| `IMGBB_API_KEY` | Server-only | Required for image uploads | ImgBB API key used by the server-side upload route. It is never sent to the browser. |
-
-**Important security notes:**
-
-- Only variables prefixed with `NEXT_PUBLIC_` are exposed to browser-side code. Never put secrets in a `NEXT_PUBLIC_` variable.
-- Keep `.env.local` out of Git.
-- Never publish MongoDB credentials, Better Auth secrets, Google OAuth secrets, or the ImgBB API key.
-- Google sign-in is enabled only when both Google OAuth credentials are configured.
-
-## Available Scripts
-
-Run these commands from the client project directory:
-
-| Command | Description |
-|---|---|
-| `npm run dev` | Start the Next.js development server. |
-| `npm run build` | Create an optimized production build. |
-| `npm run start` | Start the production server (run `npm run build` first). |
-| `npm run lint` | Run ESLint. |
-
-## Related Repository
-
-- **Backend:** [booknook-server](https://github.com/saikot-shahriyar/booknook-server)
-
----
-
-Built with Next.js, React, and MongoDB.
+## Live Site: 

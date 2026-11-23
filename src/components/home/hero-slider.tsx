@@ -35,9 +35,9 @@ const slides = [
     secondaryCta: "Explore Categories",
     secondaryCtaLink: "#categories",
     gradient:
-      "from-amber-500/10 via-orange-500/5 to-transparent dark:from-amber-950/30 dark:via-background to-background",
-    accentColor: "text-amber-600 dark:text-amber-400",
-    badgeBg: "bg-amber-500/10 text-amber-700 dark:text-amber-300 border-amber-300/30",
+      "from-amber-500/10 via-orange-500/5 to-transparent to-background",
+    accentColor: "text-amber-600",
+    badgeBg: "bg-amber-500/10 text-amber-700 border-amber-300/30",
   },
   {
     id: 2,
@@ -52,9 +52,9 @@ const slides = [
     secondaryCta: "Latest Arrivals",
     secondaryCtaLink: "#latest-arrivals",
     gradient:
-      "from-blue-500/10 via-indigo-500/5 to-transparent dark:from-blue-950/30 dark:via-background to-background",
-    accentColor: "text-blue-600 dark:text-blue-400",
-    badgeBg: "bg-blue-500/10 text-blue-700 dark:text-blue-300 border-blue-300/30",
+      "from-blue-500/10 via-indigo-500/5 to-transparent to-background",
+    accentColor: "text-blue-600",
+    badgeBg: "bg-blue-500/10 text-blue-700 border-blue-300/30",
   },
   {
     id: 3,
@@ -69,9 +69,9 @@ const slides = [
     secondaryCta: "How Borrowing Works",
     secondaryCtaLink: "#how-it-works",
     gradient:
-      "from-emerald-500/10 via-teal-500/5 to-transparent dark:from-emerald-950/30 dark:via-background to-background",
-    accentColor: "text-emerald-600 dark:text-emerald-400",
-    badgeBg: "bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 border-emerald-300/30",
+      "from-emerald-500/10 via-teal-500/5 to-transparent to-background",
+    accentColor: "text-emerald-600",
+    badgeBg: "bg-emerald-500/10 text-emerald-700 border-emerald-300/30",
   },
 ];
 
@@ -138,7 +138,10 @@ function SlideContent({ slide }: { slide: (typeof slides)[0] }) {
               "gap-2 font-medium bg-background/80 hover:bg-background"
             )}
           >
-            <span className="text-white">{slide.secondaryCta}</span>
+
+            <span className="font-bold text-[#000000]">
+              {slide.secondaryCta}
+            </span>
           </a>
         </div>
       </div>

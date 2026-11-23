@@ -159,7 +159,7 @@ export function MyProfileCard() {
                 <span className="truncate">{user.email || "—"}</span>
               </div>
             </div>
-            <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-medium bg-emerald-50 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-400 border border-emerald-300/40 dark:border-emerald-500/20">
+            <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-medium bg-emerald-50 text-emerald-700 border border-emerald-300/40">
               <ShieldCheck className="size-3.5" />
               <span>Active</span>
             </span>

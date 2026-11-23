@@ -11,7 +11,9 @@ const steps = [
     description:
       "Browse our growing catalog of fiction, science, history, kids, and diverse topics. Check real-time copy availability before borrowing.",
     icon: Search,
-    iconColor: "text-blue-600 dark:text-blue-400 bg-blue-500/10",
+    iconColor: "text-blue-600 bg-blue-500/10",
+    numberColor: "bg-blue-500/10 border-blue-500/30 text-blue-600",
+    borderColor: "group-hover:border-blue-500/60",
   },
   {
     step: "02",
@@ -19,7 +21,9 @@ const steps = [
     description:
       "Select your chosen title, review details, and confirm your borrow request with one click. Reserved copies are tracked on your dashboard.",
     icon: BookmarkCheck,
-    iconColor: "text-amber-600 dark:text-amber-400 bg-amber-500/10",
+    iconColor: "text-amber-600 bg-amber-500/10",
+    numberColor: "bg-amber-500/10 border-amber-500/30 text-amber-600",
+    borderColor: "group-hover:border-amber-500/60",
   },
   {
     step: "03",
@@ -27,7 +31,9 @@ const steps = [
     description:
       "Enjoy reading at your own pace. Once finished, return the book through your borrow manager to make it available for fellow readers.",
     icon: RotateCcw,
-    iconColor: "text-emerald-600 dark:text-emerald-400 bg-emerald-500/10",
+    iconColor: "text-emerald-600 bg-emerald-500/10",
+    numberColor: "bg-emerald-500/10 border-emerald-500/30 text-emerald-600",
+    borderColor: "group-hover:border-emerald-500/60",
   },
 ];
 
@@ -52,19 +58,22 @@ export function HowItWorks() {
             return (
               <div
                 key={item.step}
-                className="relative flex flex-col p-8 rounded-2xl border border-border/80 bg-card shadow-sm hover:shadow-md hover:border-primary/40 transition-all duration-300 group"
+                className={cn(
+                  "relative flex flex-col p-8 rounded-2xl border border-border/80 bg-card shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg group",
+                  item.borderColor
+                )}
               >
                 {/* Step Number Top Badge */}
                 <div className="flex items-center justify-between pb-6">
                   <div
                     className={cn(
-                      "flex size-14 items-center justify-center rounded-2xl shadow-xs transition-transform group-hover:scale-105 duration-200",
+                      "flex size-14 items-center justify-center rounded-2xl shadow-sm transition-transform group-hover:scale-105 duration-200",
                       item.iconColor
                     )}
                   >
                     <StepIcon className="size-7" />
                   </div>
-                  <span className="text-4xl font-extrabold text-muted-foreground/30 font-mono tracking-tighter">
+                  <span className={cn("rounded-lg border px-3.5 py-1.5 text-xl font-bold tracking-wide shadow-xs", item.numberColor)}>
                     {item.step}
                   </span>
                 </div>
@@ -83,12 +92,12 @@ export function HowItWorks() {
         </div>
 
         {/* Bottom CTA Banner */}
-        <div className="rounded-2xl border border-border bg-muted/40 p-8 sm:p-10 flex flex-col sm:flex-row items-center justify-between gap-6 text-center sm:text-left">
+        <div className="rounded-2xl border border-[#374151]/50 bg-[#111827] p-8 sm:p-10 flex flex-col sm:flex-row items-center justify-between gap-6 text-center sm:text-left">
           <div className="space-y-1.5">
-            <h4 className="text-xl font-bold text-foreground">
+            <h4 className="text-xl font-bold text-white">
               Ready to begin your reading journey?
             </h4>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-sm text-[#9CA3AF]">
               Discover captivating stories and start borrowing today.
             </p>
           </div>
@@ -96,7 +105,7 @@ export function HowItWorks() {
             href="/books"
             className={cn(
               buttonVariants({ variant: "default", size: "lg" }),
-              "gap-2 font-semibold shadow-xs shrink-0"
+              "gap-2 font-semibold shadow-xs shrink-0 bg-white text-[#111827] border-white hover:bg-[#E5E7EB] hover:border-[#D1D5DB]"
             )}
           >
             <span>Start Exploring Books</span>

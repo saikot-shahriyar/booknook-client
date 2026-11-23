@@ -67,7 +67,7 @@ export function BorrowButton({ book }: BorrowButtonProps) {
       <Button
         variant="default"
         size="default"
-        className="w-full justify-center gap-2 font-medium"
+        className="w-full justify-center gap-2 font-medium bg-[#111827] text-white hover:bg-[#374151]"
         disabled={!canBorrow}
         onClick={() => setIsDialogOpen(true)}
       >
@@ -137,7 +137,7 @@ export function BorrowButton({ book }: BorrowButtonProps) {
               <Button
                 variant="default"
                 size="sm"
-                className="gap-2 font-medium"
+                className="gap-2 font-medium bg-[#111827] text-white hover:bg-[#374151]"
                 onClick={handleConfirm}
                 disabled={isSubmitting || !canBorrow}
               >

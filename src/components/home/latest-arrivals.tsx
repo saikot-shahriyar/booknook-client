@@ -64,14 +64,15 @@ export function LatestArrivals() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
         {/* Section Heading */}
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-border/60 pb-6">
-          <div className="space-y-2">
+          <div className="w-full space-y-2 text-center">
             <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-foreground">
               Latest Arrivals
             </h2>
-            <p className="text-muted-foreground text-sm sm:text-base max-w-xl">
+            <p className="text-muted-foreground text-sm sm:text-base max-w-xl mx-auto">
               Explore newly added titles in our community collection, sorted by newest additions first.
             </p>
           </div>
+
         </div>
 
         {/* Loading State Skeleton */}
@@ -86,7 +87,7 @@ export function LatestArrivals() {
         {/* API Error / Offline State */}
         {!isLoading && error && (
           <div className="rounded-2xl border border-dashed border-border bg-muted/30 p-8 sm:p-12 text-center space-y-4 max-w-2xl mx-auto">
-            <div className="flex size-12 items-center justify-center rounded-full bg-amber-500/10 text-amber-600 dark:text-amber-400 mx-auto">
+            <div className="flex size-12 items-center justify-center rounded-full bg-amber-500/10 text-amber-600 mx-auto">
               <AlertCircle className="size-6" />
             </div>
             <div className="space-y-1.5">
@@ -165,8 +166,8 @@ export function LatestArrivals() {
               <Link
                 href="/books"
                 className={cn(
-                  buttonVariants({ variant: "outline", size: "sm" }),
-                  "hidden sm:inline-flex items-center gap-2 group font-medium"
+                  buttonVariants({ variant: "outline", size: "lg" }),
+                  "hidden sm:inline-flex items-center gap-2 group rounded-lg px-6 py-3 font-bold text-white bg-[#111827] border-[#FFFFFF]/20 shadow-sm transition-all duration-300 hover:bg-white hover:text-[#111827] hover:border-[#111827] hover:scale-105"
                 )}
               >
                 <span>See All Books</span>
@@ -182,7 +183,7 @@ export function LatestArrivals() {
             href="/books"
             className={cn(
               buttonVariants({ variant: "outline", size: "lg" }),
-              "w-full justify-center gap-2 font-medium"
+              "w-full justify-center gap-2 rounded-lg px-6 py-3 font-bold text-white bg-[#111827] border-[#FFFFFF]/20 shadow-sm transition-all duration-300 hover:bg-white hover:text-[#111827] hover:border-[#111827] hover:scale-105"
             )}
           >
             <span>See All Books</span>

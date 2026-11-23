@@ -106,7 +106,7 @@ export function MyBooksList() {
         {/* Error State */}
         {!isLoading && error && (
           <div className="rounded-2xl border border-dashed border-border bg-muted/30 p-8 sm:p-14 text-center space-y-4 max-w-2xl mx-auto">
-            <div className="flex size-14 items-center justify-center rounded-full bg-amber-500/10 text-amber-600 dark:text-amber-400 mx-auto">
+            <div className="flex size-14 items-center justify-center rounded-full bg-amber-500/10 text-amber-600 mx-auto">
               <AlertCircle className="size-7" />
             </div>
             <div className="space-y-1.5">

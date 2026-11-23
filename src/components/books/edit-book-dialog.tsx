@@ -240,7 +240,7 @@ export function EditBookDialog({ book, isOpen, onOpenChange, onSaved }: EditBook
                 onChange={(e) => setCategory(e.target.value)}
                 disabled={isBusy}
                 className={cn(
-                  "h-10 w-full min-w-0 rounded-lg border border-input bg-transparent px-2.5 py-1 text-base text-foreground shadow-xs outline-none transition-colors focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 dark:bg-input/30 md:text-sm disabled:opacity-50",
+                  "h-10 w-full min-w-0 rounded-lg border border-input bg-transparent px-2.5 py-1 text-base text-foreground shadow-xs outline-none transition-colors focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 md:text-sm disabled:opacity-50",
                   errors.category && "border-destructive"
                 )}
               >
@@ -288,7 +288,7 @@ export function EditBookDialog({ book, isOpen, onOpenChange, onSaved }: EditBook
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 disabled={isBusy}
-                className="min-h-[88px] w-full rounded-lg border border-input bg-transparent px-2.5 py-2 text-sm text-foreground shadow-xs outline-none transition-colors focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 dark:bg-input/30 disabled:opacity-50 md:text-base"
+                className="min-h-[88px] w-full rounded-lg border border-input bg-transparent px-2.5 py-2 text-sm text-foreground shadow-xs outline-none transition-colors focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:opacity-50 md:text-base"
               />
               {errors.description && (
                 <p role="alert" className="text-xs text-destructive">
@@ -334,7 +334,7 @@ export function EditBookDialog({ book, isOpen, onOpenChange, onSaved }: EditBook
                     <span>{isUploading ? "Uploading…" : "Upload Image"}</span>
                   </Button>
                   {imageUrl && (
-                    <span className="inline-flex items-center gap-1.5 text-xs text-emerald-600 dark:text-emerald-400">
+                    <span className="inline-flex items-center gap-1.5 text-xs text-emerald-600">
                       <CheckCircle2 className="size-3.5" />
                       <span>Image uploaded</span>
                     </span>

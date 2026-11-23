@@ -6,12 +6,12 @@ export const siteConfig = {
     "A modern digital sanctuary for book lovers. Discover thousands of stories, manage your borrows, and cultivate your passion for reading.",
   contact: {
     email: "contact@booknook.library",
-    phone: "+1 (800) 555-2665",
-    address: "42 Library Square, Reading City, NY 10001",
-    hours: "Mon – Fri: 9:00 AM – 6:00 PM EST",
+    phone: "+8801736-XXXXXX",
+    address: "297, Bosua, Rajshahi, Bangladesh",
+    hours: "Sunday – Thursday: 9:00 AM – 5:00 PM  BST",
   },
   social: {
-    x: "https://x.com/booknook",
+    x: "https://x.com",
     github: "https://github.com",
     linkedin: "https://linkedin.com",
     facebook: "https://facebook.com",

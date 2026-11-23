@@ -31,7 +31,7 @@ export function MyBookItem({ book, onEdited, onDeleted }: MyBookItemProps) {
   const badgeStyle = categoryBadgeStyles[book.category] || categoryBadgeStyles["Others"];
 
   return (
-    <article className="flex flex-col h-full rounded-2xl border border-border/80 bg-card text-card-foreground shadow-sm hover:shadow-md hover:border-primary/40 transition-all duration-300 overflow-hidden group">
+    <article className="flex flex-col h-full rounded-2xl border border-border/80 bg-card text-card-foreground shadow-sm transition-all duration-300 hover:shadow-lg hover:inset-ring-[2.5px] hover:inset-ring-[#111827] overflow-hidden group">
       {/* Cover image — same image area as BookCard. */}
       <div className={BOOK_CARD_IMAGE_CLASSES}>
         {book.image ? (
@@ -40,7 +40,7 @@ export function MyBookItem({ book, onEdited, onDeleted }: MyBookItemProps) {
             alt={book.title}
             fill
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-            className="object-contain object-center transition-transform duration-500 group-hover:scale-105"
+            className="object-cover object-center transition-transform duration-500 group-hover:scale-105"
             unoptimized
           />
         ) : (
@@ -49,34 +49,33 @@ export function MyBookItem({ book, onEdited, onDeleted }: MyBookItemProps) {
             <span className="text-xs font-medium">Cover Not Available</span>
           </div>
         )}
-      </div>
-
-      {/* Details */}
-      <div className="flex flex-col flex-1 gap-2 px-4 pb-4">
-        {/* Category pill badge — below the image, inside the content. */}
+        {/* Category badge — overlaid on the cover near the top-left corner. */}
         <span
           className={cn(
-            "inline-flex w-fit items-center px-2.5 py-0.5 rounded-full text-xs font-semibold border",
+            "absolute left-3 top-3 z-10 inline-flex w-fit items-center px-2.5 py-0.5 rounded-full text-xs font-semibold border shadow-sm ring-2 ring-[#FFFFFF]/15 ring-offset-1",
             badgeStyle
           )}
         >
           {book.category}
         </span>
+      </div>
 
+      {/* Details */}
+      <div className="flex flex-col flex-1 gap-3 px-5 pt-5 pb-5 sm:px-6">
         <h3 className="text-base font-bold leading-snug line-clamp-2 text-foreground">
           {book.title}
         </h3>
 
         <div className="flex items-center gap-1.5 text-xs sm:text-sm text-muted-foreground">
-          <User className="size-3.5 shrink-0 text-muted-foreground/80" />
+          <User className="size-3.5 shrink-0 text-[#2563EB]" />
           <span className="line-clamp-1">{book.author}</span>
         </div>
 
-        {/* Copies information panel (Total / Available / Availability). */}
+        {/* Copies information panel (Total / Available / availability status). */}
         <BookCopiesPanel book={book} />
 
         {book.description && (
-          <p className="text-xs text-muted-foreground/90 line-clamp-3 leading-relaxed">
+          <p className="text-sm leading-relaxed line-clamp-3 text-[#27272A]">
             {book.description}
           </p>
         )}

@@ -112,7 +112,7 @@ export default async function BookDetailsPage({ params }: BookDetailsPageProps) 
         {error && (
           <div className="w-full py-10 sm:py-14">
             <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-4 text-center">
-              <div className="flex size-14 items-center justify-center rounded-full bg-amber-500/10 text-amber-600 dark:text-amber-400 mx-auto">
+              <div className="flex size-14 items-center justify-center rounded-full bg-amber-500/10 text-amber-600 mx-auto">
                 <AlertCircle className="size-6" />
               </div>
               <h1 className="text-2xl font-bold text-foreground">Unable to Load Book Details</h1>

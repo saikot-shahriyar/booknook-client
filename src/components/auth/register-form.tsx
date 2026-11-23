@@ -259,7 +259,7 @@ function RegisterForm() {
               </span>
               <div className="grid grid-cols-1 gap-1">
                 <div
-                  className={`flex items-center gap-1.5 ${hasMinLength ? "text-emerald-600 dark:text-emerald-400 font-medium" : "text-muted-foreground"}`}
+                  className={`flex items-center gap-1.5 ${hasMinLength ? "text-emerald-600 font-medium" : "text-muted-foreground"}`}
                 >
                   {hasMinLength ? (
                     <CheckCircle2 className="size-3.5 shrink-0" />
@@ -269,7 +269,7 @@ function RegisterForm() {
                   <span>At least 6 characters long</span>
                 </div>
                 <div
-                  className={`flex items-center gap-1.5 ${hasUppercase ? "text-emerald-600 dark:text-emerald-400 font-medium" : "text-muted-foreground"}`}
+                  className={`flex items-center gap-1.5 ${hasUppercase ? "text-emerald-600 font-medium" : "text-muted-foreground"}`}
                 >
                   {hasUppercase ? (
                     <CheckCircle2 className="size-3.5 shrink-0" />
@@ -279,7 +279,7 @@ function RegisterForm() {
                   <span>At least one uppercase letter (A-Z)</span>
                 </div>
                 <div
-                  className={`flex items-center gap-1.5 ${hasLowercase ? "text-emerald-600 dark:text-emerald-400 font-medium" : "text-muted-foreground"}`}
+                  className={`flex items-center gap-1.5 ${hasLowercase ? "text-emerald-600 font-medium" : "text-muted-foreground"}`}
                 >
                   {hasLowercase ? (
                     <CheckCircle2 className="size-3.5 shrink-0" />

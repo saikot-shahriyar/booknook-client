@@ -61,12 +61,13 @@ export function ExploreCategories() {
                 key={category.title}
                 href={category.href}
                 className={cn(
-                  "group relative flex flex-col justify-between p-6 rounded-2xl border border-border/80 transition-all duration-300",
+                  "group relative flex flex-col justify-between p-6 rounded-2xl border border-border/80 shadow-sm transition-all duration-300 hover:-translate-y-1",
                   style.card,
+                  "hover:shadow-lg",
                 )}
               >
                 <div className="space-y-4">
-                  <div className={cn("flex size-12 items-center justify-center rounded-xl transition-transform group-hover:scale-110 duration-200", style.icon)}>
+                  <div className={cn("flex size-12 items-center justify-center rounded-xl shadow-sm transition-transform group-hover:scale-110 duration-200", style.icon)}>
                     <IconComponent className="size-6" />
                   </div>
                   <div className="space-y-1.5">
