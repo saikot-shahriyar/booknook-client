@@ -14,12 +14,14 @@ import { getLatestBooks } from "@/lib/api";
 import { BookCard } from "@/components/books/book-card";
 import { BookCardSkeleton } from "@/components/books/book-card-skeleton";
 import { buttonVariants } from "@/components/ui/button";
+import { Spinner } from "@/components/ui/spinner";
 import { cn } from "@/lib/utils";
 
 export function LatestArrivals() {
   const [books, setBooks] = useState<Book[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [isRetrying, setIsRetrying] = useState(false);
 
   const fetchBooks = useCallback(async () => {
     setIsLoading(true);
@@ -34,6 +36,16 @@ export function LatestArrivals() {
     }
     setIsLoading(false);
   }, []);
+
+  const handleRetry = async () => {
+    if (isRetrying) return;
+    setIsRetrying(true);
+    try {
+      await fetchBooks();
+    } finally {
+      setIsRetrying(false);
+    }
+  };
 
   useEffect(() => {
     let isCancelled = false;
@@ -75,6 +87,19 @@ export function LatestArrivals() {
 
         </div>
 
+        {/* Loading indicator — visible while the catalog request is in flight */}
+        {isLoading && (
+          <div
+            className="flex flex-col items-center justify-center gap-3 py-8"
+            role="status"
+          >
+            <Spinner size="size-8" className="text-primary" />
+            <span className="text-sm font-medium text-muted-foreground">
+              Loading books…
+            </span>
+          </div>
+        )}
+
         {/* Loading State Skeleton */}
         {isLoading && (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
@@ -101,14 +126,19 @@ export function LatestArrivals() {
             <div className="pt-2 flex flex-wrap items-center justify-center gap-3">
               <button
                 type="button"
-                onClick={fetchBooks}
+                onClick={handleRetry}
+                disabled={isRetrying}
                 className={cn(
                   buttonVariants({ variant: "default", size: "sm" }),
-                  "gap-2 font-medium cursor-pointer"
+                  "gap-2 font-medium cursor-pointer disabled:opacity-80"
                 )}
               >
-                <RefreshCw className="size-3.5" />
-                <span>Retry Connection</span>
+                {isRetrying ? (
+                  <Spinner size="size-4" className="text-white" />
+                ) : (
+                  <RefreshCw className="size-3.5" />
+                )}
+                <span>{isRetrying ? "Retrying…" : "Retry Connection"}</span>
               </button>
               <Link
                 href="/books"

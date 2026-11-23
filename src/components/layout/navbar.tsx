@@ -21,6 +21,7 @@ import {
 import { toast } from "sonner";
 import { siteConfig } from "@/lib/site-config";
 import { cn } from "@/lib/utils";
+import { Spinner } from "@/components/ui/spinner";
 import { useSession, signOut } from "@/lib/auth-client";
 
 // Map nav titles to Lucide icons
@@ -209,7 +210,10 @@ export function Navbar() {
           <div className="hidden md:flex items-center gap-2">
             {/* While session resolves, show a placeholder to avoid layout shift */}
             {isPending ? (
-              <NavSkeleton />
+              <div className="flex items-center gap-2">
+                <Spinner size="size-4" className="text-white/70" />
+                <NavSkeleton />
+              </div>
             ) : !isAuthenticated ? (
               <>
                 <Link
@@ -284,7 +288,11 @@ export function Navbar() {
                         disabled={isSigningOut}
                         className="flex items-center gap-2.5 w-full px-3 py-2 rounded-lg text-sm text-white hover:bg-[#374151] transition-colors disabled:opacity-60"
                       >
-                        <LogOut className="size-4 text-white" />
+                        {isSigningOut ? (
+                          <Spinner size="size-4" className="text-white" />
+                        ) : (
+                          <LogOut className="size-4 text-white" />
+                        )}
                         <span>{isSigningOut ? "Signing out…" : "Logout"}</span>
                       </button>
                     </div>
@@ -344,7 +352,7 @@ export function Navbar() {
           <div className="mt-4 pt-4 border-t border-[#374151]/50 flex flex-col gap-2">
             {isPending ? (
               <div className="flex justify-center py-2">
-                <div className="size-5 rounded-full bg-[#374151] animate-pulse" />
+                <Spinner size="size-5" className="text-[#9CA3AF]" />
               </div>
             ) : !isAuthenticated ? (
               <>
@@ -397,7 +405,11 @@ export function Navbar() {
                   disabled={isSigningOut}
                   className="flex items-center gap-2.5 w-full px-3 py-2.5 rounded-lg text-sm text-white hover:bg-[#374151] transition-colors disabled:opacity-60"
                 >
-                  <LogOut className="size-4 text-white" />
+                  {isSigningOut ? (
+                    <Spinner size="size-4" className="text-white" />
+                  ) : (
+                    <LogOut className="size-4 text-white" />
+                  )}
                   <span>{isSigningOut ? "Signing out…" : "Logout"}</span>
                 </button>
               </div>

@@ -80,7 +80,7 @@ function SlideContent({ slide }: { slide: (typeof slides)[0] }) {
   return (
     <div
       className={cn(
-        "relative w-full min-h-[380px] sm:min-h-[440px] lg:min-h-[480px] flex items-center justify-center p-8 sm:p-12 lg:p-16 bg-gradient-to-br",
+        "relative w-full min-h-95 sm:min-h-[440px] lg:min-h-[480px] flex items-center justify-center p-8 sm:p-12 lg:p-16 bg-gradient-to-br",
         slide.gradient
       )}
     >

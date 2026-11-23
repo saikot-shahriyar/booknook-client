@@ -8,6 +8,7 @@ import { Borrow } from "@/types";
 import { MyBorrowItem } from "@/components/books/my-borrow-item";
 import { MyBorrowRow } from "@/components/books/my-borrow-row";
 import { buttonVariants } from "@/components/ui/button";
+import { Spinner } from "@/components/ui/spinner";
 import { cn } from "@/lib/utils";
 
 /**
@@ -21,6 +22,7 @@ export function MyBorrowList() {
   const [borrows, setBorrows] = useState<Borrow[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [isRetrying, setIsRetrying] = useState(false);
 
   const fetchBorrows = useCallback(async () => {
     const result = await getMyBorrows();
@@ -33,6 +35,16 @@ export function MyBorrowList() {
     }
     setIsLoading(false);
   }, []);
+
+  const handleRetry = async () => {
+    if (isRetrying) return;
+    setIsRetrying(true);
+    try {
+      await fetchBorrows();
+    } finally {
+      setIsRetrying(false);
+    }
+  };
 
   useEffect(() => {
     let isCancelled = false;
@@ -85,7 +97,20 @@ export function MyBorrowList() {
           </div>
         </div>
 
-        {/* Loading Skeleton */}
+        {/* Loading indicator — visible while the borrows request is in flight */}
+        {isLoading && (
+          <div
+            className="flex flex-col items-center justify-center gap-3 py-8"
+            role="status"
+          >
+            <Spinner size="size-8" className="text-primary" />
+            <span className="text-sm font-medium text-muted-foreground">
+              Loading your borrows…
+            </span>
+          </div>
+        )}
+
+        {/* Loading Skeleton — preserved alongside the spinner */}
         {isLoading && (
           <div className="space-y-4">
             {Array.from({ length: 3 }).map((_, index) => (
@@ -118,14 +143,19 @@ export function MyBorrowList() {
             <div className="pt-2 flex justify-center">
               <button
                 type="button"
-                onClick={fetchBorrows}
+                onClick={handleRetry}
+                disabled={isRetrying}
                 className={cn(
                   buttonVariants({ variant: "default", size: "default" }),
-                  "gap-2 font-medium cursor-pointer"
+                  "gap-2 font-medium cursor-pointer disabled:opacity-80"
                 )}
               >
-                <RefreshCw className="size-4" />
-                <span>Retry</span>
+                {isRetrying ? (
+                  <Spinner size="size-4" className="text-white" />
+                ) : (
+                  <RefreshCw className="size-4" />
+                )}
+                <span>{isRetrying ? "Retrying…" : "Retry"}</span>
               </button>
             </div>
           </div>

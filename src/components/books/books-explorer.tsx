@@ -16,6 +16,7 @@ import { BookCard } from "@/components/books/book-card";
 import { BookCardSkeleton } from "@/components/books/book-card-skeleton";
 import { getCategoryStyle } from "@/components/books/category-styles";
 import { buttonVariants } from "@/components/ui/button";
+import { Spinner } from "@/components/ui/spinner";
 import { cn } from "@/lib/utils";
 
 const CATEGORIES = [
@@ -35,6 +36,7 @@ export function BooksExplorer() {
   const [books, setBooks] = useState<Book[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [isRetrying, setIsRetrying] = useState(false);
 
   // Active category derived from URL search param
   const activeCategory = useMemo(() => {
@@ -84,6 +86,16 @@ export function BooksExplorer() {
       isCancelled = true;
     };
   }, []);
+
+  const handleRetry = async () => {
+    if (isRetrying) return;
+    setIsRetrying(true);
+    try {
+      await fetchAllBooks();
+    } finally {
+      setIsRetrying(false);
+    }
+  };
 
   // Update category filter and reflect in URL
   const handleCategoryChange = (category: string) => {
@@ -176,7 +188,20 @@ export function BooksExplorer() {
           </div>
         </div>
 
-        {/* Loading Skeleton Grid */}
+        {/* Loading indicator — visible while the catalog request is in flight */}
+        {isLoading && (
+          <div
+            className="flex flex-col items-center justify-center gap-3 py-8"
+            role="status"
+          >
+            <Spinner size="size-8" className="text-primary" />
+            <span className="text-sm font-medium text-muted-foreground">
+              Loading books…
+            </span>
+          </div>
+        )}
+
+        {/* Loading Skeleton Grid — preserved alongside the spinner */}
         {isLoading && (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
             {Array.from({ length: 6 }).map((_, index) => (
@@ -202,14 +227,19 @@ export function BooksExplorer() {
             <div className="pt-2 flex justify-center">
               <button
                 type="button"
-                onClick={fetchAllBooks}
+                onClick={handleRetry}
+                disabled={isRetrying}
                 className={cn(
                   buttonVariants({ variant: "default", size: "default" }),
-                  "gap-2 font-medium cursor-pointer"
+                  "gap-2 font-medium cursor-pointer disabled:opacity-80"
                 )}
               >
-                <RefreshCw className="size-4" />
-                <span>Retry Connection</span>
+                {isRetrying ? (
+                  <Spinner size="size-4" className="text-white" />
+                ) : (
+                  <RefreshCw className="size-4" />
+                )}
+                <span>{isRetrying ? "Retrying…" : "Retry Connection"}</span>
               </button>
             </div>
           </div>
