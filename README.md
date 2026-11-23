@@ -82,7 +82,20 @@ Copy-Item .env.example .env.local
 cp .env.example .env.local
 ```
 
-Open `.env.local` and provide the values described below. Do not commit this file.
+Open `.env.local` and provide the values from the table below. Do not commit this file.
+
+### Environment variables
+
+| Variable | Purpose |
+|---|---|
+| `NEXT_PUBLIC_API_URL` | Base URL of the BookNook Express backend API. The server listens on `PORT=5000` in the [BookNook Server repository](https://github.com/saikot-shahriyar/booknook-server). |
+| `NEXT_PUBLIC_APP_URL` | Base URL of this client app (`http://localhost:3000` locally) — the default base URL for the Better Auth client. |
+| `BETTER_AUTH_URL` | Better Auth base URL where the auth API is served (`http://localhost:3000` locally). |
+| `BETTER_AUTH_SECRET` | Secret used by Better Auth to sign sessions. Must be at least 32 characters — generate one with `openssl rand -hex 32`. |
+| `MONGODB_URI` | MongoDB connection URI for the application database; the database name is `booknook`. |
+| `GOOGLE_CLIENT_ID` | Optional: Google OAuth client ID — enables sign-in with Google in `src/lib/auth.ts`. |
+| `GOOGLE_CLIENT_SECRET` | Optional: Google OAuth client secret. |
+| `IMGBB_API_KEY` | ImgBB API key used by the server-side upload proxy in `src/app/api/upload/route.ts` so the key is never exposed to the browser. |
 
 ### 4. Start the backend
 
