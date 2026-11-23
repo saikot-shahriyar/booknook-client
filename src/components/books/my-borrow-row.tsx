@@ -7,6 +7,7 @@ import { Borrow } from "@/types";
 import { formatBorrowDate } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { ReturnBorrowDialog } from "@/components/books/return-borrow-dialog";
+import { getStatusStyle } from "@/components/books/status-styles";
 
 interface MyBorrowRowProps {
   borrow: Borrow;
@@ -21,6 +22,7 @@ interface MyBorrowRowProps {
 export function MyBorrowRow({ borrow, onReturned }: MyBorrowRowProps) {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const imageUrl = borrow.bookImage?.trim();
+  const activeStyle = getStatusStyle("Active");
 
   return (
     <>
@@ -34,11 +36,11 @@ export function MyBorrowRow({ borrow, onReturned }: MyBorrowRowProps) {
                 alt={borrow.bookTitle}
                 width={48}
                 height={48}
-                className="w-12 h-12 rounded-xl object-cover shrink-0"
+                className="size-12 rounded-xl object-cover shrink-0"
                 unoptimized
               />
             ) : (
-              <div className="flex w-12 h-12 shrink-0 items-center justify-center rounded-xl bg-muted">
+              <div className="flex size-12 shrink-0 items-center justify-center rounded-xl bg-muted">
                 <BookOpen className="size-5 text-muted-foreground" />
               </div>
             )}
@@ -58,8 +60,8 @@ export function MyBorrowRow({ borrow, onReturned }: MyBorrowRowProps) {
 
         {/* Status */}
         <td className="px-6 py-4">
-          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-medium bg-background/90 text-emerald-700 dark:text-emerald-400 border border-emerald-300/40 backdrop-blur-md shadow-xs">
-            <CheckCircle2 className="size-3 text-emerald-600 dark:text-emerald-400" />
+          <span className={activeStyle.badge}>
+            <CheckCircle2 className={activeStyle.icon} />
             <span>Active</span>
           </span>
         </td>

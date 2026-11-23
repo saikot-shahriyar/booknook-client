@@ -5,7 +5,7 @@ import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = {
-  title: "404 Page Not Found",
+  title: "Not Found",
   description:
     "The page you're looking for could not be found. Head back home or browse the full catalog of books.",
 };
@@ -51,7 +51,7 @@ export default function NotFound() {
             )}
           >
             <Library className="size-4" />
-            <span>Browse All Books</span>
+            <span>Browse Books</span>
             <ArrowRight className="size-4" />
           </Link>
         </div>

@@ -1,8 +1,17 @@
 import { Suspense } from "react";
+import type { Metadata } from "next";
 import { HeroSlider } from "@/components/home/hero-slider";
 import { LatestArrivals } from "@/components/home/latest-arrivals";
 import { ExploreCategories } from "@/components/home/explore-categories";
 import { HowItWorks } from "@/components/home/how-it-works";
+
+export const metadata: Metadata = {
+  // Note: Next.js does not apply the root layout's title template to the root
+  // page itself, so the title includes the app name explicitly.
+  title: "BookNook | Home",
+  description:
+    "Discover books in the BookNook library. Browse the latest arrivals, explore categories, and learn how borrowing works.",
+};
 
 function LatestArrivalsLoading() {
   return (
@@ -11,10 +20,7 @@ function LatestArrivalsLoading() {
         <div className="h-20 w-1/3 rounded-xl bg-muted/60 animate-pulse" />
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {Array.from({ length: 6 }).map((_, index) => (
-            <div
-              key={index}
-              className="h-96 rounded-2xl bg-muted/40 animate-pulse"
-            />
+            <div key={index} className="h-[480px] rounded-2xl bg-muted/40 animate-pulse" />
           ))}
         </div>
       </div>

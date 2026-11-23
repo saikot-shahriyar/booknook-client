@@ -7,6 +7,7 @@ import { ProtectedRoute } from "@/components/auth/protected-route";
 import { requireAuth } from "@/lib/auth-server";
 import { getBookById, ApiError } from "@/lib/api";
 import { categoryBadgeStyles } from "@/components/books/book-card";
+import { getStatusStyle } from "@/components/books/status-styles";
 import { BorrowButton } from "@/components/books/borrow-button";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -15,10 +16,35 @@ import { Book } from "@/types";
 // Opt out of instant/static prerender — this route needs runtime data (params + session)
 export const instant = false;
 
-export const metadata: Metadata = {
-  title: "Book Details",
-  description: "View full book details, availability, and borrow this book.",
-};
+/**
+ * Dynamic metadata: the page title uses the book's title when available
+ * (e.g. "BookNook | Purono Bangla Boi"); when the book is missing the
+ * fallback is "BookNook | Not Found" (root layout template + "Not Found").
+ */
+export async function generateMetadata({
+  params,
+}: BookDetailsPageProps): Promise<Metadata> {
+  const { id } = await params;
+
+  let title: string = "Not Found";
+  let description: string =
+    "The page you're looking for could not be found. Head back home or browse the full catalog of books.";
+
+  try {
+    const response = await getBookById(id);
+    const book = response?.data ?? null;
+    if (book && book.title) {
+      title = book.title;
+      if (book.description) {
+        description = book.description;
+      }
+    }
+  } catch {
+    // Book not found or backend error: keep the generic title/description.
+  }
+
+  return { title, description };
+}
 
 interface BookDetailsPageProps {
   params: Promise<{ id: string }>;
@@ -111,15 +137,15 @@ export default async function BookDetailsPage({ params }: BookDetailsPageProps) 
         {!error && book && (
           <div className="w-full py-10 sm:py-14">
             <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-              <div className="grid grid-cols-1 lg:grid-cols-[260px,1fr] gap-8 rounded-3xl border border-border/80 bg-card shadow-xs overflow-hidden">
-                {/* Cover column */}
-                <div className="relative aspect-[5/7] bg-muted/50 flex items-center justify-center">
+              <div className="grid grid-cols-1 md:grid-cols-[280px_1fr] gap-5 md:gap-6 items-start rounded-2xl border border-border/80 bg-card shadow-sm overflow-hidden">
+                {/* Left column: cover image — reduced size, vertically centered */}
+                <div className="relative aspect-[5/7] w-full flex items-center justify-center overflow-hidden rounded-2xl bg-muted/50">
                   {book.image ? (
                     <Image
                       src={book.image}
                       alt={book.title}
                       fill
-                      className="object-cover"
+                      className="object-contain"
                       unoptimized
                     />
                   ) : (
@@ -130,18 +156,16 @@ export default async function BookDetailsPage({ params }: BookDetailsPageProps) 
                   )}
                   <span
                     className={cn(
-                      "absolute top-3 left-3 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold border shadow-xs",
-                      book.availableCopies > 0
-                        ? "bg-background/90 text-emerald-700 dark:text-emerald-400 border-emerald-300/40"
-                        : "bg-background/90 text-rose-700 dark:text-rose-400 border-rose-300/40"
+                      "absolute top-3 left-3",
+                      getStatusStyle(book.availableCopies > 0 ? "Available" : "Out of Stock").badge
                     )}
                   >
                     {book.availableCopies > 0 ? "Available" : "Out of Stock"}
                   </span>
                 </div>
 
-                {/* Details column */}
-                <div className="flex flex-col gap-5 p-6 sm:p-8">
+                {/* Right column: details — scans quickly on a balanced layout */}
+                <div className="flex flex-col gap-4 p-5 md:p-7">
                   <div className="space-y-2">
                     <span
                       className={cn(

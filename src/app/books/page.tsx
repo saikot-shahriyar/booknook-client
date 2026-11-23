@@ -1,11 +1,10 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
 import { BooksExplorer } from "@/components/books/books-explorer";
+import { BookCardSkeleton } from "@/components/books/book-card-skeleton";
 
 export const metadata: Metadata = {
-  title: {
-    absolute: "BookNook | All Books",
-  },
+  title: "All Books",
   description:
     "Browse and explore the full collection of books in the BookNook library. Filter by genre, check copy availability, and borrow with ease.",
 };
@@ -21,10 +20,7 @@ function BooksPageSkeleton() {
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
           {Array.from({ length: 6 }).map((_, index) => (
-            <div
-              key={index}
-              className="h-[460px] rounded-2xl border border-border/60 bg-muted/30 animate-pulse"
-            />
+            <BookCardSkeleton key={index} />
           ))}
         </div>
       </div>

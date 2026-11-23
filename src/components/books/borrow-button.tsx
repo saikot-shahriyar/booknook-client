@@ -6,7 +6,10 @@ import { toast } from "sonner";
 import { BookCheck, CalendarDays, Loader2 } from "lucide-react";
 import { Book } from "@/types";
 import { ApiError, borrowBook } from "@/lib/api";
+import { useSession } from "@/lib/auth-client";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 interface BorrowButtonProps {
   book: Book;
@@ -15,15 +18,19 @@ interface BorrowButtonProps {
 /**
  * Client component that opens a confirmation dialog and submits the borrow
  * request for a book. Uses the centralized `apiFetch()` and refreshes the
- * server-rendered book data after a successful borrow.
+ * server-rendered book data after a successful borrow. The modal shows the
+ * authenticated user's name and email as read-only fields.
  */
 export function BorrowButton({ book }: BorrowButtonProps) {
   const router = useRouter();
+  const { data: session } = useSession();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const canBorrow = book.availableCopies > 0;
   const bookId = book._id || "";
+  const userName = session?.user?.name ?? "";
+  const userEmail = session?.user?.email ?? "";
 
   const handleConfirm = async () => {
     // Prevent repeated submissions while a request is pending.
@@ -84,7 +91,32 @@ export function BorrowButton({ book }: BorrowButtonProps) {
           >
             <div className="space-y-1.5 p-5 sm:p-6">
               <h2 className="text-xl font-bold text-foreground">Borrow “{book.title}”?</h2>
-              <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
+              {/* Read-only user identity — populated from the authenticated session. */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+                <div className="space-y-1.5">
+                  <Label htmlFor="borrow-user-name">User Name</Label>
+                  <Input
+                    id="borrow-user-name"
+                    type="text"
+                    value={userName}
+                    readOnly
+                    placeholder="Unavailable"
+                    className="h-10 bg-muted text-foreground"
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <Label htmlFor="borrow-user-email">User Email</Label>
+                  <Input
+                    id="borrow-user-email"
+                    type="email"
+                    value={userEmail}
+                    readOnly
+                    placeholder="Unavailable"
+                    className="h-10 bg-muted text-foreground"
+                  />
+                </div>
+              </div>
+              <div className="flex items-center gap-1.5 text-sm text-muted-foreground pt-1">
                 <CalendarDays className="size-3.5" />
                 <span>You have 7 days to return this book.</span>
               </div>

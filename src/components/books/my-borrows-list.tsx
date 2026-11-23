@@ -91,9 +91,9 @@ export function MyBorrowList() {
             {Array.from({ length: 3 }).map((_, index) => (
               <div
                 key={index}
-                className="flex items-center gap-3 rounded-2xl border border-border/60 bg-card px-6 py-4 animate-pulse"
+                className="flex items-center gap-3 rounded-2xl border border-border/80 bg-card px-6 py-4 animate-pulse"
               >
-                <div className="w-12 h-12 shrink-0 rounded-xl bg-muted" />
+                <div className="size-12 shrink-0 rounded-xl bg-muted" />
                 <div className="h-5 w-1/2 rounded-md bg-muted" />
                 <div className="ml-auto h-4 w-1/4 rounded-md bg-muted/80" />
               </div>

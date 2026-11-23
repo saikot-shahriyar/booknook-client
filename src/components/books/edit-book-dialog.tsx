@@ -386,7 +386,7 @@ export function EditBookDialog({ book, isOpen, onOpenChange, onSaved }: EditBook
           <Button
             type="submit"
             disabled={isBusy}
-            className="gap-2 font-semibold shadow-xs"
+            className="gap-2 font-semibold"
           >
             {isSaving ? (
               <Loader2 className="size-4 animate-spin" />

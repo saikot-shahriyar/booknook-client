@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
-import { BookOpen, Mail, Phone, MapPin, Clock } from "lucide-react";
+import { Mail, Phone, MapPin, Clock } from "lucide-react";
+import Image from "next/image";
 import { siteConfig } from "@/lib/site-config";
 import {
   XIcon,
@@ -22,8 +23,14 @@ export function Footer() {
               href="/"
               className="flex items-center gap-2.5 font-bold text-xl tracking-tight text-foreground transition-opacity hover:opacity-90 group inline-flex"
             >
-              <div className="flex size-9 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-xs">
-                <BookOpen className="size-5" />
+            <div className="flex size-9 items-center justify-center rounded-xl shadow-xs">
+                <Image
+                  src="/booknook.png"
+                  alt="BookNook logo"
+                  width={36}
+                  height={36}
+                  className="object-contain"
+                />
               </div>
               <div className="flex items-baseline gap-1.5">
                 <span className="text-xl font-bold tracking-tight text-foreground">

@@ -3,7 +3,6 @@
 import React, { useEffect, useState, useMemo, useCallback } from "react";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import {
-  BookOpen,
   Filter,
   RefreshCw,
   AlertCircle,
@@ -14,6 +13,8 @@ import {
 import { Book } from "@/types";
 import { getAllBooks } from "@/lib/api";
 import { BookCard } from "@/components/books/book-card";
+import { BookCardSkeleton } from "@/components/books/book-card-skeleton";
+import { getCategoryStyle } from "@/components/books/category-styles";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -113,11 +114,6 @@ export function BooksExplorer() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
         {/* Page Header */}
         <div className="border-b border-border/70 pb-8 space-y-4">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-primary/10 text-primary border border-primary/20">
-            <BookOpen className="size-3.5" />
-            <span>Library Collection</span>
-          </div>
-
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
             <div className="space-y-2">
               <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-foreground">
@@ -157,6 +153,8 @@ export function BooksExplorer() {
           <div className="flex flex-wrap items-center gap-2">
             {CATEGORIES.map((cat) => {
               const isActive = activeCategory === cat;
+              // "All" keeps the neutral primary style; named categories use the shared palette.
+              const style = cat === "All" ? null : getCategoryStyle(cat);
               return (
                 <button
                   key={cat}
@@ -165,7 +163,9 @@ export function BooksExplorer() {
                   className={cn(
                     "px-4 py-1.5 rounded-full text-xs sm:text-sm font-medium transition-all cursor-pointer border",
                     isActive
-                      ? "bg-primary text-primary-foreground border-primary shadow-xs font-semibold"
+                      ? style
+                        ? style.pill
+                        : "bg-primary text-primary-foreground border-primary shadow-xs font-semibold"
                       : "bg-muted/50 text-muted-foreground border-border hover:text-foreground hover:bg-muted"
                   )}
                 >
@@ -180,17 +180,7 @@ export function BooksExplorer() {
         {isLoading && (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
             {Array.from({ length: 6 }).map((_, index) => (
-              <div
-                key={index}
-                className="flex flex-col h-[460px] rounded-2xl border border-border/60 bg-card overflow-hidden animate-pulse p-4 space-y-4"
-              >
-                <div className="aspect-[3/4] w-full rounded-xl bg-muted" />
-                <div className="space-y-2 flex-1 pt-2">
-                  <div className="h-5 w-3/4 rounded-md bg-muted" />
-                  <div className="h-4 w-1/2 rounded-md bg-muted/80" />
-                  <div className="h-10 w-full rounded-md bg-muted/50 mt-4" />
-                </div>
-              </div>
+              <BookCardSkeleton key={index} />
             ))}
           </div>
         )}

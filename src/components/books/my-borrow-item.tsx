@@ -7,6 +7,7 @@ import { Borrow } from "@/types";
 import { formatBorrowDate } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { ReturnBorrowDialog } from "@/components/books/return-borrow-dialog";
+import { getStatusStyle } from "@/components/books/status-styles";
 
 interface MyBorrowItemProps {
   borrow: Borrow;
@@ -22,9 +23,10 @@ interface MyBorrowItemProps {
 export function MyBorrowItem({ borrow, onReturned }: MyBorrowItemProps) {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const imageUrl = borrow.bookImage?.trim();
+  const activeStyle = getStatusStyle("Active");
 
   return (
-    <article className="flex flex-col gap-3 rounded-2xl border border-border/80 bg-card text-card-foreground shadow-xs hover:shadow-lg hover:border-primary/40 transition-all duration-300 overflow-hidden">
+    <article className="flex flex-col gap-3 rounded-2xl border border-border/80 bg-card text-card-foreground shadow-sm hover:shadow-md hover:border-primary/40 transition-all duration-300 overflow-hidden">
       {/* Cover Image + Active Badge */}
       <div className="relative aspect-square w-full overflow-hidden bg-muted/50">
         {imageUrl ? (
@@ -44,8 +46,8 @@ export function MyBorrowItem({ borrow, onReturned }: MyBorrowItemProps) {
         )}
 
         <div className="absolute top-3 right-3 z-10">
-          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-medium bg-background/90 text-emerald-700 dark:text-emerald-400 border border-emerald-300/40 backdrop-blur-md shadow-xs">
-            <CheckCircle2 className="size-3 text-emerald-600 dark:text-emerald-400" />
+          <span className={activeStyle.badge}>
+            <CheckCircle2 className={activeStyle.icon} />
             <span>Active</span>
           </span>
         </div>

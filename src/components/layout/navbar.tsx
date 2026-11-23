@@ -162,8 +162,14 @@ export function Navbar() {
             href="/"
             className="flex items-center gap-2.5 font-bold text-xl tracking-tight text-foreground transition-opacity hover:opacity-90 group shrink-0"
           >
-            <div className="flex size-9 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-xs transition-transform group-hover:scale-105">
-              <BookOpen className="size-5" />
+            <div className="flex size-9 items-center justify-center rounded-xl shadow-xs transition-transform group-hover:scale-105">
+              <Image
+                src="/booknook.png"
+                alt="BookNook logo"
+                width={36}
+                height={36}
+                className="object-contain"
+              />
             </div>
             <div className="flex items-baseline gap-1.5">
               <span className="text-xl font-bold tracking-tight text-foreground">

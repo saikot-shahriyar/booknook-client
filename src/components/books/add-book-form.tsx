@@ -206,7 +206,7 @@ export function AddBookForm() {
   };
 
   return (
-    <div className="w-full max-w-2xl mx-auto p-6 sm:p-8 rounded-3xl border border-border/80 bg-card text-card-foreground shadow-sm space-y-6">
+    <div className="w-full max-w-2xl mx-auto p-6 sm:p-8 rounded-2xl border border-border/80 bg-card text-card-foreground shadow-sm space-y-6">
       {/* Brand Header */}
       <div className="text-center space-y-2">
         <div className="flex size-11 items-center justify-center rounded-2xl bg-primary text-primary-foreground mx-auto shadow-xs">
@@ -345,7 +345,7 @@ export function AddBookForm() {
                   variant="outline"
                   onClick={() => fileInputRef.current?.click()}
                   disabled={isBusy}
-                  className="gap-2"
+                  className="h-10 gap-2"
                 >
                   <FileImage className="size-4" />
                   <span>Select Image</span>
@@ -363,7 +363,7 @@ export function AddBookForm() {
                   variant="outline"
                   onClick={handleUploadImage}
                   disabled={isBusy || !imageFile || isSameFile(imageFile, uploadedFile)}
-                  className="gap-2"
+                  className="h-10 gap-2"
                 >
                   {isUploading ? (
                     <Loader2 className="size-4 animate-spin" />
@@ -444,7 +444,7 @@ export function AddBookForm() {
           type="submit"
           size="lg"
           disabled={isBusy}
-          className="w-full justify-center gap-2 font-semibold shadow-xs"
+          className="w-full justify-center gap-2 font-semibold h-10"
         >
           {isSubmitting ? (
             <>

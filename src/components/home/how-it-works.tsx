@@ -37,9 +37,6 @@ export function HowItWorks() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
         {/* Section Heading */}
         <div className="text-center max-w-2xl mx-auto space-y-3">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-primary/10 text-primary border border-primary/20">
-            <span>Simple & Free</span>
-          </div>
           <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-foreground">
             How Borrowing Works
           </h2>
@@ -55,7 +52,7 @@ export function HowItWorks() {
             return (
               <div
                 key={item.step}
-                className="relative flex flex-col p-8 rounded-2xl border border-border/80 bg-card shadow-xs hover:shadow-md hover:border-primary/40 transition-all duration-300 group"
+                className="relative flex flex-col p-8 rounded-2xl border border-border/80 bg-card shadow-sm hover:shadow-md hover:border-primary/40 transition-all duration-300 group"
               >
                 {/* Step Number Top Badge */}
                 <div className="flex items-center justify-between pb-6">

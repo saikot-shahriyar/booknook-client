@@ -18,8 +18,8 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "BookNook | A Small Online Library",
-    template: "%s | BookNook",
+    default: "Home",
+    template: "BookNook | %s",
   },
   description:
     "BookNook - A modern, user-friendly online library to discover, borrow, and manage books.",
