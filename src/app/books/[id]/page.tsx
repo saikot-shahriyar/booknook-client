@@ -134,7 +134,7 @@ export default async function BookDetailsPage({ params }: BookDetailsPageProps) 
             <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="grid grid-cols-1 md:grid-cols-[280px_1fr] gap-5 md:gap-6 items-start rounded-2xl border border-border/80 bg-card shadow-sm overflow-hidden">
                 {/* Left column: cover image — reduced size, vertically centered */}
-                <div className="relative aspect-[5/7] w-full flex items-center justify-center overflow-hidden rounded-2xl bg-muted/50">
+                <div className="relative aspect-5/7 w-full flex items-center justify-center overflow-hidden rounded-2xl bg-muted/50">
                   {book.image ? (
                     <Image
                       src={book.image}

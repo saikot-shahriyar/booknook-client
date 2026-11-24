@@ -17,7 +17,7 @@ export default function BookDetailsLoading() {
         <div className="h-5 w-1/3 rounded-full bg-muted animate-pulse" />
 
         <div className="grid grid-cols-1 lg:grid-cols-[340px,1fr] gap-6 lg:gap-8">
-          <div className="aspect-[3/4] w-full rounded-2xl bg-muted animate-pulse" />
+          <div className="aspect-3/4 w-full rounded-2xl bg-muted animate-pulse" />
           <div className="space-y-4 pt-2">
             <div className="h-5 w-24 rounded-full bg-muted animate-pulse" />
             <div className="h-6 w-2/3 rounded-lg bg-muted animate-pulse" />
