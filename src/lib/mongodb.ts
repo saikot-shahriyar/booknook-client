@@ -23,27 +23,32 @@ const options = {
   },
 };
 
-let client: MongoClient;
-let clientPromise: Promise<MongoClient>;
-
 declare global {
-  // Preserve client across module reloads during development HMR
+  // Preserve the client across module reloads during development HMR and
+  // across serverless function contexts while they are kept warm (Vercel production).
   var _mongoClientPromise: Promise<MongoClient> | undefined;
   var _mongoClient: MongoClient | undefined;
 }
 
-if (process.env.NODE_ENV === "development") {
-  if (!global._mongoClient) {
-    global._mongoClient = new MongoClient(uri, options);
-    global._mongoClientPromise = global._mongoClient.connect();
-  }
-  client = global._mongoClient;
-  clientPromise = global._mongoClientPromise!;
-} else {
-  client = new MongoClient(uri, options);
-  clientPromise = client.connect();
+// Single `globalThis`-based client in development AND production: when a reusable
+// instance already exists it is reused, so no new MongoClient is created on every
+// module initialization.
+if (!globalThis._mongoClient) {
+  globalThis._mongoClient = new MongoClient(uri, options);
+  globalThis._mongoClientPromise = globalThis._mongoClient.connect();
+
+  // Make the initial connection failure visible in the server logs. The MongoDB
+  // driver closes the topology itself when `connect()` fails, so the client must
+  // not be treated as usable until the connection has succeeded. This is logging
+  // only: there is no automatic retry, and the rejected promise is left in place
+  // for any consumer (driver operations) to surface the failure.
+  globalThis._mongoClientPromise.catch((err: unknown) => {
+    console.error("[booknook] MongoDB initial connection failed:", err);
+  });
 }
 
+const client: MongoClient = globalThis._mongoClient!;
+const clientPromise: Promise<MongoClient> = globalThis._mongoClientPromise!;
 const db: Db = client.db("booknook");
 
 export { client, clientPromise, db };
