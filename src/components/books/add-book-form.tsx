@@ -138,6 +138,25 @@ export function AddBookForm() {
     }
   };
 
+  /**
+   * Clears every piece of form state after a book is added successfully.
+   * Revokes the previous preview's object URL to avoid memory leaks.
+   */
+  const resetForm = () => {
+    if (imagePreview) {
+      URL.revokeObjectURL(imagePreview);
+    }
+    setForm(DEFAULT_FORM);
+    setImageFile(null);
+    setImagePreview("");
+    setImageUrl("");
+    setUploadedFile(null);
+    setErrors({});
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setErrors({});
@@ -186,6 +205,7 @@ export function AddBookForm() {
         router.push("/books");
       }
       router.refresh();
+      resetForm();
     } catch (err) {
       const message =
         err instanceof ApiError && err.message
