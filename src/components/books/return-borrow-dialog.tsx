@@ -1,7 +1,6 @@
-
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState, useSyncExternalStore } from "react";
 import { createPortal } from "react-dom";
 import { toast } from "sonner";
 import { Loader2, RotateCcw } from "lucide-react";
@@ -16,6 +15,12 @@ interface ReturnBorrowDialogProps {
   onReturned: (borrowId: string) => void;
 }
 
+// `isMounted` is derived from `useSyncExternalStore`: the dialog only
+// renders after the client is mounted (the server snapshot is false).
+const subscribe = () => () => {};
+const getSnapshot = () => true;
+const getServerSnapshot = () => false;
+
 export function ReturnBorrowDialog({
   borrow,
   isOpen,
@@ -23,14 +28,13 @@ export function ReturnBorrowDialog({
   onReturned,
 }: ReturnBorrowDialogProps) {
   const [isReturning, setIsReturning] = useState(false);
-  const [isMounted, setIsMounted] = useState(false);
+  const isMounted = useSyncExternalStore(
+    subscribe,
+    getSnapshot,
+    getServerSnapshot
+  );
 
   const borrowId = borrow._id || "";
-
-  // Wait until the component mounts in the browser.
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
 
   const handleConfirm = async () => {
     if (isReturning) {

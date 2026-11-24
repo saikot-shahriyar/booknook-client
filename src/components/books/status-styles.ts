@@ -1,13 +1,3 @@
-/**
- * Shared, single source of truth for BookNook availability and borrowing
- * status badge styles.
- *
- * Each status maps to the approved main color (text/icon) and light
- * background. The `badge` classes are complete, consistent badges: standard
- * padding, radius, font weight and backdrop. All Tailwind class strings are
- * literal (containing the approved hex values) so the Tailwind scanner
- * generates the utilities — do not build these dynamically.
- */
 
 export interface StatusStyle {
   /** Approved main color (hex) — badge text/icon color (light mode). */

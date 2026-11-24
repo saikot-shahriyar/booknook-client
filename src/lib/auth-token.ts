@@ -1,20 +1,3 @@
-/**
- * Retrieves and caches the Better Auth JWT used by the BookNook backend for
- * Bearer authentication.
- *
- * The token is fetched from the same-origin endpoint `/api/auth/token`
- * (Better Auth `jwt` plugin's `GET /token` route). The browser sends the
- * Better Auth session cookie automatically, so an active session is required
- * (the endpoint answers 401 when there is none).
- *
- * Notes:
- * - The token is cached in memory only — never localStorage/sessionStorage.
- * - The cached token is refreshed when it is expired or near expiry.
- * - `getAuthToken()` returns `null` when there is no valid session/token.
- * - Safe to call during server rendering: it only uses browser-agnostic
- *   `fetch`, `Date` and `atob`-style decoding, and any failure returns `null`.
- */
-
 const JWT_ENDPOINT = "/api/auth/token";
 /**
  * Refresh the cached token when it is within this window of expiry.

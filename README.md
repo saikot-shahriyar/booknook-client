@@ -107,6 +107,4 @@ Follow the setup instructions in the [BookNook Server repository](https://github
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) in your browser.
-
 ## Live Site: https://booknook-client-flax-seven.vercel.app/login

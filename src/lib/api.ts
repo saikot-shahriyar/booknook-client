@@ -68,16 +68,6 @@ export interface ApiFetchOptions extends Omit<RequestInit, "body"> {
 
 /**
  * Reusable fetch wrapper for the BookNook backend (`booknook-server`).
- *
- * - Targets `API_BASE_URL` and supports GET, POST, PATCH and DELETE.
- * - Adds `Authorization: Bearer <jwt>` when a valid Better Auth JWT is
- *   available; public requests still work without one (no login required).
- * - Adds `Content-Type: application/json` when sending JSON bodies.
- * - Uses an `AbortController` timeout and handles non-JSON responses safely.
- * - Non-2xx responses throw `ApiError` carrying the status and parsed body.
- *
- * Note: automatic 401 redirects/retries are intentionally out of scope for
- * this layer and can be layered on by callers.
  */
 export async function apiFetch<T = unknown>(path: string, init: ApiFetchOptions = {}): Promise<T> {
   const { body: providedBody, ...restInit } = init;
@@ -276,15 +266,6 @@ export async function deleteBorrow(
 
 /**
  * Upload a book cover image through the server-side proxy route.
- *
- * The image is posted as FormData to the same-origin Next.js route
- * `POST /api/upload`; that route uploads the file to ImgBB using the
- * server-side `IMGBB_API_KEY` (the key never reaches the browser) and
- * returns the hosted image URL.
- *
- * This intentionally bypasses `apiFetch()`: it prefixes the Express backend
- * base URL (`API_BASE_URL`), and the Express backend has no `/api/upload`
- * route — this request used to 404 there.
  */
 export async function uploadBookImage(file: File): Promise<string> {
   const formData = new FormData();
@@ -316,7 +297,6 @@ export async function uploadBookImage(file: File): Promise<string> {
 
 /**
  * Add a new book to the library via the backend.
- * Returns the backend response: `{ success: true, message, data: Book }`.
  */
 export async function createBook(data: CreateBookRequest): Promise<ApiMutationResponse<Book>> {
   return apiFetch<ApiMutationResponse<Book>>("/books", {
@@ -358,9 +338,7 @@ export async function getMyBooks(userEmail: string): Promise<GetBooksResponse> {
 }
 
 /**
- * Update an existing book. The backend only allows the creator who added the
- * book (403 otherwise — ownership is derived from the verified JWT, not the
- * client).
+ * Update an existing book
  */
 export async function updateBook(
   id: string,
@@ -380,9 +358,7 @@ export async function updateBook(
 }
 
 /**
- * Delete a book. The backend only allows the creator who added the book
- * (403 otherwise — ownership is derived from the verified JWT, not the
- * client).
+ * Delete a book
  */
 export async function deleteBook(id: string): Promise<ApiMutationResponse<void>> {
   const trimmedId = id.trim();

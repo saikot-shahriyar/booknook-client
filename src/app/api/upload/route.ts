@@ -1,13 +1,8 @@
 import type { NextRequest } from "next/server";
+import { headers } from "next/headers";
 
-/**
- * Server-side ImgBB upload proxy for the Add Book page.
- *
- * The browser never receives the ImgBB API key — the client only posts the
- * selected file to this route as FormData, and this route uploads it to
- * ImgBB using `process.env.IMGBB_API_KEY` (never prefixed with NEXT_PUBLIC_)
- * and returns the hosted image URL to the client.
- */
+import { auth } from "@/lib/auth";
+
 const IMGBB_UPLOAD_URL = "https://api.imgbb.com/1/upload";
 
 /** Maximum accepted cover-image size: 5 MB. */
@@ -15,6 +10,15 @@ const MAX_IMAGE_BYTES = 5 * 1024 * 1024;
 
 export async function POST(request: NextRequest) {
   try {
+    const session = await auth.api.getSession({ headers: await headers() });
+
+    if (!session) {
+      return Response.json(
+        { success: false, message: "Authentication required to upload images." },
+        { status: 401 }
+      );
+    }
+
     const apiKey = process.env.IMGBB_API_KEY;
 
     if (!apiKey) {

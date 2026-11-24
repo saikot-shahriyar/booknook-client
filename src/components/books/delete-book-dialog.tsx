@@ -14,11 +14,6 @@ interface DeleteBookDialogProps {
   onDeleted: (bookId: string) => void;
 }
 
-/**
- * Hand-rolled confirmation dialog (consistent with the design system) that
- * deletes a book after confirmation. Uses the backend `DELETE /books/:id`
- * API, which only allows the creator who added the book.
- */
 export function DeleteBookDialog({ book, isOpen, onOpenChange, onDeleted }: DeleteBookDialogProps) {
   const [isDeleting, setIsDeleting] = useState(false);
   const bookId = book._id || "";

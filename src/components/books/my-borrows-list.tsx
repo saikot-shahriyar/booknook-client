@@ -11,13 +11,6 @@ import { buttonVariants } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
 import { cn } from "@/lib/utils";
 
-/**
- * Client component that lists the signed-in user's active borrow records
- * (`GET /borrows` — the backend derives the user from the verified JWT).
- * Shows a desktop table (Book, Borrow Date, Return Date, Status, Actions)
- * and a responsive card grid on small screens, with loading, error and empty
- * states.
- */
 export function MyBorrowList() {
   const [borrows, setBorrows] = useState<Borrow[]>([]);
   const [isLoading, setIsLoading] = useState(true);

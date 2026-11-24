@@ -1,12 +1,3 @@
-/**
- * Shared, single source of truth for BookNook book-category styles.
- *
- * Each category maps to its approved main color and light background.
- * All Tailwind class strings below are literal (containing the approved hex
- * values) so the Tailwind scanner generates the utilities — do not build
- * these dynamically.
- */
-
 export interface CategoryStyle {
   /** Approved main color (hex) — text/icon/accent. */
   main: string;

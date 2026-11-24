@@ -16,11 +16,6 @@ import { Book } from "@/types";
 // Opt out of instant/static prerender — this route needs runtime data (params + session)
 export const instant = false;
 
-/**
- * Dynamic metadata: the page title uses the book's title when available
- * (e.g. "BookNook | Purono Bangla Boi"); when the book is missing the
- * fallback is "BookNook | Not Found" (root layout template + "Not Found").
- */
 export async function generateMetadata({
   params,
 }: BookDetailsPageProps): Promise<Metadata> {

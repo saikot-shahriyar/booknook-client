@@ -10,11 +10,6 @@ interface SpinnerProps {
   label?: string;
 }
 
-/**
- * Reusable loading spinner: the Lucide `Loader2` icon with `animate-spin`.
- * A spinner next to text is decorative by default (`aria-hidden`); pass
- * `label` when the spinner itself should announce as a status message.
- */
 export function Spinner({ className, size = "size-4", label }: SpinnerProps) {
   const classes = cn(size, "animate-spin", className);
   if (label) {

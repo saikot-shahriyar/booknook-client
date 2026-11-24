@@ -21,7 +21,7 @@ export const siteConfig = {
       { title: "Home", href: "/" },
       { title: "All Books", href: "/books" },
     ],
-    // Reserved for authenticated sessions (Better Auth integration in future phase)
+
     private: [
       { title: "Add Book", href: "/add-book" },
       { title: "My Books", href: "/my-books" },

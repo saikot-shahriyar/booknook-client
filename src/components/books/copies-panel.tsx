@@ -1,16 +1,7 @@
-import React from "react";
 import { CheckCircle2 } from "lucide-react";
 import { Book } from "@/types";
 import { getStatusStyle } from "@/components/books/status-styles";
 
-/**
- * Shared "Copies information" panel used by BookCard and MyBookItem:
- * shows total copies, available copies and the availability status.
- *
- * Labels and values are aligned on opposite sides of a light neutral
- * surface, and the availability row reuses the existing status badge colors
- * so nothing new is invented.
- */
 export function BookCopiesPanel({ book }: { book: Book }) {
   const isAvailable = (book.availableCopies ?? 0) > 0;
   const availabilityStyle = getStatusStyle(

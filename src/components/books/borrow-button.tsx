@@ -15,12 +15,6 @@ interface BorrowButtonProps {
   book: Book;
 }
 
-/**
- * Client component that opens a confirmation dialog and submits the borrow
- * request for a book. Uses the centralized `apiFetch()` and refreshes the
- * server-rendered book data after a successful borrow. The modal shows the
- * authenticated user's name and email as read-only fields.
- */
 export function BorrowButton({ book }: BorrowButtonProps) {
   const router = useRouter();
   const { data: session } = useSession();

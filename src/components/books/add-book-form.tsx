@@ -52,12 +52,6 @@ const DEFAULT_FORM: AddBookFormState = {
 
 /**
  * Client component for the Add Book page (`/add-book`).
- *
- * 1. The user selects a cover image; the local file is validated and previewed.
- * 2. The image is uploaded to ImgBB via the server-side proxy route
- *    `/api/upload` — the ImgBB API key never reaches the browser.
- * 3. Once an image URL is hosted, the book data is submitted to the backend
- *    through the centralized `createBook()` helper in `@/lib/api`.
  */
 export function AddBookForm() {
   const router = useRouter();

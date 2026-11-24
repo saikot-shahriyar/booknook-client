@@ -15,11 +15,6 @@ interface MyBorrowItemProps {
   onReturned: (borrowId: string) => void;
 }
 
-/**
- * Mobile card for the My Borrows page: shows the cover, title, borrow and due
- * dates and a Return Book action. Used in the responsive card grid below the
- * desktop table.
- */
 export function MyBorrowItem({ borrow, onReturned }: MyBorrowItemProps) {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const imageUrl = borrow.bookImage?.trim();

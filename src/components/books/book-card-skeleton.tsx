@@ -1,11 +1,3 @@
-import React from "react";
-
-/**
- * Loading skeleton matching the new BookCard structure (fixed image area,
- * badge/title/author/panel/description/button bars) — used by the loading
- * states of the home Latest Arrivals section, the All Books page and
- * My Books page.
- */
 export function BookCardSkeleton() {
   return (
     <div className="flex flex-col h-[580px] rounded-2xl border border-border/80 bg-card overflow-hidden animate-pulse">

@@ -1,4 +1,3 @@
-import React from "react";
 import Link from "next/link";
 import { BookOpen, Atom, Landmark, Smile, Layers, ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";

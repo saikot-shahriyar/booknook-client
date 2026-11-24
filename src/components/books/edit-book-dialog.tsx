@@ -36,10 +36,7 @@ interface EditBookDialogProps {
 }
 
 /**
- * Modal dialog to edit an existing book (owner only). State is initialized
- * from the book the dialog was opened with — the dialog unmounts when
- * closed (see the `key` usage in `MyBookItem`), so reopening it re-prefills
- * from the current book. Saves through `PATCH /books/:id`.
+ * Modal dialog to edit an existing book (owner only)
  */
 export function EditBookDialog({ book, isOpen, onOpenChange, onSaved }: EditBookDialogProps) {
   const fileInputRef = useRef<HTMLInputElement | null>(null);

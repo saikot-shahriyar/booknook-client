@@ -1,4 +1,3 @@
-import React from "react";
 import Link from "next/link";
 import { Search, BookmarkCheck, RotateCcw, ArrowRight } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";

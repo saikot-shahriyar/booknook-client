@@ -94,11 +94,7 @@ function ProfileAvatar({
   );
 }
 
-/**
- * Client component for the My Profile page: displays the authenticated
- * user's profile image, name, email address and account information,
- * using the session data from Better Auth only.
- */
+
 export function MyProfileCard() {
   const { data: session, isPending } = useSession();
   const user = session?.user;

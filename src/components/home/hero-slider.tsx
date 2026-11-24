@@ -80,7 +80,7 @@ function SlideContent({ slide }: { slide: (typeof slides)[0] }) {
   return (
     <div
       className={cn(
-        "relative w-full min-h-95 sm:min-h-[440px] lg:min-h-[480px] flex items-center justify-center p-8 sm:p-12 lg:p-16 bg-gradient-to-br",
+        "relative w-full min-h-[280px] sm:min-h-[440px] lg:min-h-[480px] flex items-center justify-center p-8 sm:p-12 lg:p-16 bg-gradient-to-br",
         slide.gradient
       )}
     >
@@ -101,7 +101,7 @@ function SlideContent({ slide }: { slide: (typeof slides)[0] }) {
         <div className="absolute -bottom-24 -left-24 size-96 rounded-full bg-primary/5 blur-3xl" />
       </div>
 
-      <div className="relative z-10 max-w-3xl text-center space-y-6">
+      <div className="relative z-10 max-w-3xl text-center space-y-4">
         {/* Slide Badge */}
         <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-semibold border backdrop-blur-md shadow-xs mx-auto">
           <BadgeIcon className={cn("size-3.5", slide.accentColor)} />
@@ -109,12 +109,12 @@ function SlideContent({ slide }: { slide: (typeof slides)[0] }) {
         </div>
 
         {/* Slide Heading */}
-        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-white leading-tight">
+        <h1 className="text-2xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-white leading-tight">
           {slide.title}
         </h1>
 
         {/* Slide Description */}
-        <p className="text-base sm:text-lg text-white leading-relaxed max-w-2xl mx-auto">
+        <p className="text-sm sm:text-lg text-white leading-relaxed max-w-2xl mx-auto">
           {slide.description}
         </p>
 
