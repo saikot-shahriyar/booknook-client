@@ -1,6 +1,4 @@
-
 import { betterAuth } from "better-auth";
-import { createAuthMiddleware, APIError } from "better-auth/api";
 import { mongodbAdapter } from "better-auth/adapters/mongodb";
 import { jwt } from "better-auth/plugins";
 import { db, client } from "@/lib/mongodb";
@@ -13,51 +11,12 @@ const authBaseUrl = process.env.BETTER_AUTH_URL || "http://localhost:3000";
 
 export const auth = betterAuth({
   appName: "BookNook",
-
   database: mongodbAdapter(db, {
     client,
   }),
-
   emailAndPassword: {
     enabled: true,
-    minPasswordLength: 6,
   },
-
-  // Server-side password validation
-  hooks: {
-    before: createAuthMiddleware(async (ctx) => {
-      if (ctx.path !== "/sign-up/email") {
-        return;
-      }
-
-      const password = ctx.body?.password;
-
-      if (typeof password !== "string") {
-        throw new APIError("BAD_REQUEST", {
-          message: "Password is required.",
-        });
-      }
-
-      if (password.length < 6) {
-        throw new APIError("BAD_REQUEST", {
-          message: "Password must be at least 6 characters long.",
-        });
-      }
-
-      if (!/[A-Z]/.test(password)) {
-        throw new APIError("BAD_REQUEST", {
-          message: "Password must include at least one uppercase letter (A-Z).",
-        });
-      }
-
-      if (!/[a-z]/.test(password)) {
-        throw new APIError("BAD_REQUEST", {
-          message: "Password must include at least one lowercase letter (a-z).",
-        });
-      }
-    }),
-  },
-
   ...(hasGoogleAuth
     ? {
       socialProviders: {
@@ -68,7 +27,14 @@ export const auth = betterAuth({
       },
     }
     : {}),
-
+  // নতুন: session cookie-তে ৫ মিনিট cache রাখবে,
+  // তাই প্রতিটা page navigation-এ MongoDB-তে যেতে হবে না
+  session: {
+    cookieCache: {
+      enabled: true,
+      maxAge: 5 * 60,
+    },
+  },
   plugins: [
     jwt({
       jwt: {
@@ -77,7 +43,6 @@ export const auth = betterAuth({
       },
     }),
   ],
-
   secret: process.env.BETTER_AUTH_SECRET,
   baseURL: authBaseUrl,
 });
