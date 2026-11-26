@@ -59,7 +59,7 @@
 
 
 
-import dns from "node:dns";
+// import dns from "node:dns";
 import { MongoClient, ServerApiVersion, Db } from "mongodb";
 import { attachDatabasePool } from "@vercel/functions";
 
@@ -87,6 +87,8 @@ const options = {
   maxPoolSize: 10,
   minPoolSize: 0,
   maxIdleTimeMS: 5000,
+  serverSelectionTimeoutMS: 10000,
+  connectTimeoutMS: 10000,
 };
 
 const globalForMongo = globalThis as unknown as {
