@@ -20,7 +20,8 @@ export interface GetBorrowsResponse {
 }
 
 /** Timeout applied to every backend request issued through `apiFetch`. */
-const API_FETCH_TIMEOUT_MS = 10_000;
+// const API_FETCH_TIMEOUT_MS = 10_000;
+const API_FETCH_TIMEOUT_MS = 30_000;
 
 /**
  * Normalized error thrown by `apiFetch` for non-2xx responses and transport
@@ -69,8 +70,15 @@ export interface ApiFetchOptions extends Omit<RequestInit, "body"> {
 /**
  * Reusable fetch wrapper for the BookNook backend (`booknook-server`).
  */
+
+export interface ApiFetchOptions extends Omit<RequestInit, "body"> {
+  body?: RequestInit["body"] | Record<string, unknown> | null;
+  /** Custom timeout in ms (defaults to API_FETCH_TIMEOUT_MS). */
+  timeoutMs?: number;
+}
+
 export async function apiFetch<T = unknown>(path: string, init: ApiFetchOptions = {}): Promise<T> {
-  const { body: providedBody, ...restInit } = init;
+  const { body: providedBody, timeoutMs = API_FETCH_TIMEOUT_MS, ...restInit } = init;
   const method = (init.method ?? "GET").toUpperCase();
   const hasBody = providedBody != null && method !== "GET" && method !== "HEAD";
 
@@ -83,7 +91,7 @@ export async function apiFetch<T = unknown>(path: string, init: ApiFetchOptions 
   }
 
   const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), API_FETCH_TIMEOUT_MS);
+  const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
 
   // Forward caller-provided abort signals into the timeout controller.
   if (init.signal) {
@@ -145,13 +153,42 @@ export async function apiFetch<T = unknown>(path: string, init: ApiFetchOptions 
 }
 
 /**
+ * GET helper for pages that must survive a backend cold start
+ * (e.g. Render free plan waking up from sleep).
+ * Uses a longer timeout and retries on timeouts / network errors / 5xx.
+ * Only use it for GET requests (safe to repeat).
+ */
+async function fetchWithRetry<T>(path: string, retries = 2): Promise<T> {
+  let lastError: unknown;
+
+  for (let attempt = 0; attempt <= retries; attempt++) {
+    try {
+      return await apiFetch<T>(path, { cache: "no-store", timeoutMs: 30_000 });
+    } catch (err) {
+      lastError = err;
+
+      const isRetryable =
+        !(err instanceof ApiError) || err.status === 0 || err.status >= 500;
+
+      if (!isRetryable || attempt === retries) {
+        break;
+      }
+
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+    }
+  }
+
+  throw lastError;
+}
+
+/**
  * Fetch the latest books for the Home Page.
  * Returns latest books or a user-friendly error message if backend is unreachable.
  */
 export async function getLatestBooks(limit = 6): Promise<GetBooksResponse> {
   try {
     // The backend applies MongoDB sort (createdAt: -1) and limit via /books?limit=N
-    const json = await apiFetch<{ data?: Book[] }>(`/books?limit=${limit}`, { cache: "no-store" });
+    const json = await fetchWithRetry<{ data?: Book[] }>(`/books?limit=${limit}`);
 
     const books = json?.data;
     const rawBooks: Book[] = Array.isArray(books) ? books : [];
@@ -169,7 +206,7 @@ export async function getLatestBooks(limit = 6): Promise<GetBooksResponse> {
  */
 export async function getAllBooks(): Promise<GetBooksResponse> {
   try {
-    const json = await apiFetch<{ data?: Book[] }>(`/books`, { cache: "no-store" });
+    const json = await fetchWithRetry<{ data?: Book[] }>(`/books`);
 
     const books = json?.data;
     const rawBooks: Book[] = Array.isArray(books) ? books : [];
@@ -199,9 +236,7 @@ export async function getBookById(id: string): Promise<ApiItemResponse<Book>> {
     throw new ApiError("Book ID is required.", 400);
   }
 
-  return apiFetch<ApiItemResponse<Book>>(`/books/${encodeURIComponent(trimmedId)}`, {
-    cache: "no-store",
-  });
+  return fetchWithRetry<ApiItemResponse<Book>>(`/books/${encodeURIComponent(trimmedId)}`);
 }
 
 /**
@@ -230,7 +265,7 @@ export async function borrowBook(bookId: string): Promise<ApiMutationResponse<Bo
  */
 export async function getMyBorrows(): Promise<GetBorrowsResponse> {
   try {
-    const json = await apiFetch<{ data?: Borrow[] }>(`/borrows`, { cache: "no-store" });
+    const json = await fetchWithRetry<{ data?: Borrow[] }>(`/borrows`);
 
     // Defensive filter: only items that carry the borrow record `_id` can be
     // used for returns, so the list always contains usable record IDs.
@@ -325,10 +360,8 @@ export async function getMyBooks(userEmail: string): Promise<GetBooksResponse> {
   }
 
   try {
-    const json = await apiFetch<{ data?: Book[] }>(
-      `/books?userEmail=${encodeURIComponent(email)}`,
-      { cache: "no-store" }
-    );
+    const json = await fetchWithRetry<{ data?: Book[] }>(
+      `/books?userEmail=${encodeURIComponent(email)}`);
     const books = Array.isArray(json?.data) ? json.data : [];
     return { books, error: null };
   } catch (err) {
