@@ -1,6 +1,7 @@
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
+import { ensureMongoConnected } from "@/lib/mongodb";
 
 /**
  * Retrieves the current authenticated user session on the server side
@@ -8,6 +9,7 @@ import { auth } from "@/lib/auth";
  */
 export async function getServerSession() {
   const reqHeaders = await headers();
+  await ensureMongoConnected();
   return await auth.api.getSession({
     headers: reqHeaders,
   });
